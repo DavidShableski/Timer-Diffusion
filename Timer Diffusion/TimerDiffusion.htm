@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>David Shableski Diffusion</title>
+    <!--David Shableski-->
+    <style>
+      body {
+        color: #000000;
+        background-color: #3d863d;
+      }
+      #top-cell {
+        width: 500px;
+        height: 500px;
+        position: relative;
+        border: 1px solid black;
+      }
+      .circle_green {
+        position: absolute;
+        top: 250px;
+        left: 250px;
+        width: 10px;
+        height: 10px;
+      }
+      textarea {
+        width: 100%;
+        height: 400px; /* Adjust the height as needed */
+        resize: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>David Shableski Diffusion</h1>
+
+    <table>
+      <tr>
+        <td id="top-cell">
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+          <img src="circle_green.png" class="circle_green" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button id="start-btn">Start</button>
+          <button id="pause-btn" disabled>Pause</button>
+          <button id="continue-btn" disabled>Continue</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <textarea id="output" rows="60"></textarea>
+        </td>
+      </tr>
+    </table>
+    <script>
+      //david shableski
+      let dot = document.getElementsByTagName("img");
+      //dot[0].style.top = "200px";
+
+      var variances = [];
+
+      var x = new Array(20).fill(250);
+      var y = new Array(20).fill(250);
+
+      var t = 0;
+
+      //alert(x.length);
+      //alert(x[13]);
+      document
+        .getElementById("start-btn")
+        .addEventListener("click", function () {
+          //dot position
+          x.fill(250);
+          y.fill(250);
+          //clear textarea
+          document.getElementById("output").value = "";
+          //start timer
+          timer = setInterval(moveCircles, 100);
+          //enable pause
+          document.getElementById("pause-btn").removeAttribute("disabled");
+
+          this.setAttribute("disabled", true);
+        });
+      document
+        .getElementById("pause-btn")
+        .addEventListener("click", function () {
+          // stop timer
+          clearInterval(timer);
+
+          //enable start and continue disable pause
+          document.getElementById("start-btn").removeAttribute("disabled");
+          document.getElementById("continue-btn").removeAttribute("disabled");
+          this.setAttribute("disabled", true);
+        });
+
+      document
+        .getElementById("continue-btn")
+        .addEventListener("click", function () {
+          // restart timer
+          timer = setInterval(moveCircles, 100);
+
+          //disable continue start enable pause
+          this.setAttribute("disabled", true);
+          document.getElementById("start-btn").setAttribute("disabled", true);
+          document.getElementById("pause-btn").removeAttribute("disabled");
+        });
+      function moveCircles() {
+        for (let i = 0; i < x.length; i++) {
+          x[i] += Math.floor(Math.random() * 3 - 1);
+          y[i] += Math.floor(Math.random() * 3 - 1);
+
+          dot[i].style.left = x[i] + "px";
+          dot[i].style.top = y[i] + "px";
+        }
+        calculateVariance();
+      }
+
+      function calculateVariance() {
+        const sum = x.reduce((acc, xPos, i) => {
+          return acc + Math.pow(xPos - 250, 2) + Math.pow(y[i] - 250, 2);
+        }, 0);
+        const variance = sum / 20;
+        variances.push(variance);
+        document.getElementById("output").value += `Step ${
+          t + 1
+        }: Variance ${variance}\n`;
+        t++;
+      }
+    </script>
+  </body>
+</html>
