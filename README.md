@@ -60,7 +60,7 @@ The complete code for the Timer Diffusion project is as follows:
     <style>
       body {
         color: #000000;
-        background-color: #00ff00;
+        background-color: #3d863d;
       }
       #top-cell {
         width: 500px;
